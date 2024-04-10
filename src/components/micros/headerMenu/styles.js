@@ -24,7 +24,7 @@ export const Center = styled.View`
   flex-direction: row;
   width: 100%;
   margin: 20px 0;
-  height: 60px;
+  height: ${(props) => (props.height ? props.height : "60px")};
   padding: 10px;
 `;
 export const Container = styled.View`
@@ -37,15 +37,32 @@ export const Container = styled.View`
   padding-bottom: 20px;
   transition: height 0.5s ease-in-out;
 `;
+export const SecondayContainer = styled.View`
+  display: flex;
+  justify-content: flex-start;
+  background-color: ${(props) => lightTheme.colors.success[6]};
+  flex-direction: column;
+  height: ${(props) => (props.isOpen ? "520px" : "100px")};
+  width: 100%;
+  padding-bottom: 20px;
+  transition: height 0.5s ease-in-out;
+`;
 export const TopContainer = styled.View`
   display: flex;
   justify-content: flex-end;
   align-items: center;
   flex-direction: column;
   width: 100%;
-  height: 176px;
+  height: ${(props) => (props.height ? props.height : "176px")};
   border-bottom-width: 1px;
   border-color: #000;
+`;
+export const TextContainer = styled.View`
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 15px;
 `;
 export const BottonContainer = styled.View`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -54,4 +71,5 @@ export const BottonContainer = styled.View`
   flex-direction: column;
   gap: 5px;
   flex: 1;
+  padding: 20px;
 `;

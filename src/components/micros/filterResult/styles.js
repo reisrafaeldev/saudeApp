@@ -2,7 +2,10 @@ import styled from "styled-components/native";
 import lightTheme from "../../../theme/light";
 
 export const Button = styled.TouchableOpacity`
-  color: #fff;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 68px;
 `;
 export const Text = styled.Text`
   color: #fff;
@@ -10,25 +13,31 @@ export const Text = styled.Text`
   margin-right: 7px;
 `;
 export const Image = styled.Image`
-  width: 50px;
-  height: 50px;
+  width: 26px;
+  height: 26px;
   object-fit: cover;
+  margin-bottom: 2PX;
 `;
-export const Center = styled.View`
+export const Top = styled.View`
   display: flex;
   color: #fff;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
-  height: 60px;
-  padding: 10px;
+  padding-bottom: 5px;
+  border-bottom-width: 1px;
+  border-color: #000;
 `;
 export const Container = styled.TouchableOpacity`
+  padding: 10px;
+
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding-top: 8px;
   gap: 7px;
-  background-color: ${(props) => lightTheme.colors.neutras[2]};
+  background-color: #D1D5DA;
   flex-direction: column;
-  max-height: 110px;
-  width: 110px;
-  flex-basis: 33%;
+  margin:  20px;
 `;
+

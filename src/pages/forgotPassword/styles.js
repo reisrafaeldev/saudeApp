@@ -29,5 +29,6 @@ export const Form = styled.View`
   margin-top: 60px;
   display: flex;
   align-items: center;
+  padding: 20px;
   flex-direction: column;
 `;

@@ -2,6 +2,7 @@ import styled, { css } from "styled-components/native";
 
 export const Text = styled.Text`
   color: ${(props) => props.color || "#08506F"};
+  width: ${(props) => props.width || "auto"};
   text-align: ${(props) => props.textAlign || "center"};
   ${(props) => props.variant === "Title1" && title1};
   ${(props) => props.variant === "Title2" && title2};

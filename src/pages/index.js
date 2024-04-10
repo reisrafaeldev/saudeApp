@@ -1,4 +1,10 @@
-export { ForgotPassword }  from "./forgotPassword"
-export { Login }  from "./login" 
-export { Initial }  from "./initial" 
-export { Menu }  from "./menu"
+export { ForgotPassword } from "./forgotPassword";
+export { Login } from "./login";
+export { Initial } from "./initial";
+export { Menu } from "./menu";
+export { Data } from "./data";
+export { Specialty } from "./specialty";
+export { MakeAppointment } from "./makeAppointment";
+export { MyAppointment } from "./myAppointment";
+export { ServicesType } from "./servicesType";
+export { Maps } from "./maps";

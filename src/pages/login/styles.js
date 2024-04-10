@@ -24,7 +24,7 @@ export const ImageFooter = styled.Image`
 `;
 export const Form = styled.View`
   width: 100%;
-  padding: 16px 0;
+  padding: 16px;
   margin-top: 60px;
   display: flex;
   align-items: center;

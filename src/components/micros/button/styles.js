@@ -20,5 +20,5 @@ export const Container = styled.View`
   border-radius: 3px;
   flex-direction: row;
   height: 40px;  
-  width: 80%;
+  width: ${(props) => props.width || "100%"};
 `;

@@ -21,14 +21,10 @@ export const Center = styled.View`
   height: 60px;
   padding: 10px;
 `;
-export const Container = styled.TouchableOpacity`
+export const Container = styled.View`
+  flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 7px;
-  background-color: ${(props) => lightTheme.colors.neutras[2]};
+  justify-content: flex-start;
   flex-direction: column;
-  max-height: 110px;
-  width: 110px;
-  flex-basis: 33%;
+  align-items: flex-start;
 `;

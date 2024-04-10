@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AuthProvider from "../context/auth";
-import { ForgotPassword, Login, Initial, Menu } from "../pages";
+import { ForgotPassword, Login, Initial, Menu , Data, Specialty, MakeAppointment, MyAppointment, ServicesType, Maps } from "../pages";
 import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
@@ -13,6 +13,49 @@ const Route = () => {
     <NavigationContainer>
       <AuthProvider>
         <Stack.Navigator>
+        <Stack.Screen
+            name="Initial"
+            options={{
+              headerShown: false,
+            }}
+            component={Initial}
+          />
+        <Stack.Screen
+            name="Maps"
+            options={{
+              headerShown: false,
+            }}
+            component={Maps}
+          />
+        <Stack.Screen
+            name="ServicesType"
+            options={{
+              headerShown: false,
+            }}
+            component={ServicesType}
+          />
+
+          <Stack.Screen
+            name="MyAppointment"
+            options={{
+              headerShown: false,
+            }}
+            component={MyAppointment}
+          />
+          <Stack.Screen
+            name="MakeAppointment"
+            options={{
+              headerShown: false,
+            }}
+            component={MakeAppointment}
+          />
+          <Stack.Screen
+            name="Specialty"
+            options={{
+              headerShown: false,
+            }}
+            component={Specialty}
+          />
           <Stack.Screen
             name="Menu"
             options={{
@@ -20,14 +63,15 @@ const Route = () => {
             }}
             component={Menu}
           />
-          
           <Stack.Screen
-            name="Initial"
+            name="Data"
             options={{
               headerShown: false,
             }}
-            component={Initial}
+            component={Data}
           />
+          
+
           <Stack.Screen
             name="Login"
             options={{

@@ -1,7 +1,7 @@
 import { TextComponent } from "../text";
 import * as S from "./styles";
 
-export const MenuOption = ({ title, image }) => {
+export const MenuOption = ({ title, image, onPress }) => {
   const handleImage = (image) => {
     switch (image) {
       case "calendario":
@@ -24,7 +24,7 @@ export const MenuOption = ({ title, image }) => {
     }
   };
   return (
-    <S.Container>
+    <S.Container onPress={onPress}>
       {handleImage(image)}
       <TextComponent color={"#000"} variant={"Title10"}>
         {title}
