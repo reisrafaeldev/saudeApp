@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AuthProvider from "../context/auth";
 import { ForgotPassword, Login, Initial, Menu , Data, Specialty, MakeAppointment, MyAppointment, ServicesType, Maps } from "../pages";
 import { Ionicons } from "@expo/vector-icons";
+import { MapScreen } from "../pages/mapScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,13 @@ const Route = () => {
               headerShown: false,
             }}
             component={Maps}
+          />
+        <Stack.Screen
+            name="MapScreen"
+            options={{
+              headerShown: false,
+            }}
+            component={MapScreen}
           />
         <Stack.Screen
             name="ServicesType"

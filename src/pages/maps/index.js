@@ -26,6 +26,7 @@ export const Maps = () => {
           label={"Por Especizalidade"}
           backgroundColor={"#222b45"}
           marginT={"0"}
+          onPress={()=>  navigation.navigate("MapScreen")}
         >
           <TextComponent color={"#000"} variant={"Title9"}>
             Por Especialidade
@@ -36,6 +37,7 @@ export const Maps = () => {
           label={"Por Especizalidade"}
           backgroundColor={"#222b45"}
           marginT={"0"}
+          onPress={()=>  navigation.navigate("MapScreen")}
         >
           <TextComponent color={"#000"} variant={"Title9"}>
             Consultórios/Clínicas
@@ -46,6 +48,7 @@ export const Maps = () => {
           label={"Por Especizalidade"}
           backgroundColor={"#222b45"}
           marginT={"0"}
+          onPress={()=>  navigation.navigate("MapScreen")}
         >
           <TextComponent color={"#000"} variant={"Title9"}>
             Hospitais Eletivos
@@ -56,6 +59,7 @@ export const Maps = () => {
           label={"Por Especizalidade"}
           backgroundColor={"#222b45"}
           marginT={"0"}
+          onPress={()=>  navigation.navigate("MapScreen")}
         >
           <TextComponent color={"#000"} variant={"Title9"}>
             Pronto Socorro 24h (Urgência e Emergência)
@@ -66,6 +70,7 @@ export const Maps = () => {
           label={"Por Especizalidade"}
           backgroundColor={"#222b45"}
           marginT={"0"}
+          onPress={()=>  navigation.navigate("MapScreen")}
         >
           <S.CenterIcon>
             <TextComponent color={"#000"} variant={"Title9"}>
