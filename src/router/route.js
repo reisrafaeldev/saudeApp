@@ -18,6 +18,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { MapScreen } from "../pages/mapScreen";
 import { MeusDados } from "../pages/MeusDados";
+import { MeusVideos } from "../pages/MeusVideos";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,13 @@ const Route = () => {
               headerShown: false,
             }}
             component={MeusDados}
+          />
+          <Stack.Screen
+            name="MeusVideos"
+            options={{
+              headerShown: false,
+            }}
+            component={MeusVideos}
           />
           <Stack.Screen
             name="Maps"

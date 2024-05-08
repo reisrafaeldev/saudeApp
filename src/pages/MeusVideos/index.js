@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import * as S from "./styles";
 import { Camera } from "expo-camera";
 import * as FileSystem from "expo-file-system";
-import AsyncStorage from "@react-native-async-storage/async-storage"; // Importar AsyncStorage
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Template,
   HeaderMenu,
@@ -12,14 +11,15 @@ import {
 } from "../../components/micros";
 import { View, Text, StyleSheet, FlatList, Button } from "react-native";
 
-export const MeusDados = () => {
+export const MeusVideos = () => {
   const [facing, setFacing] = useState("back");
   const [cameraPermission, setCameraPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
-  const [photos, setPhotos] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [data, setData] = useState({ titulo: "", descricao: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -28,15 +28,14 @@ export const MeusDados = () => {
     };
     requestPermission();
 
-    const loadPhotos = async () => {
-      const storedPhotos = await AsyncStorage.getItem("photos");
-      if (storedPhotos) {
-        console.log(JSON.parse(storedPhotos));
-        setPhotos(JSON.parse(storedPhotos));
+    const loadVideos = async () => {
+      const storedVideos = await AsyncStorage.getItem("videos");
+      if (storedVideos) {
+        setVideos(JSON.parse(storedVideos));
       }
     };
 
-    loadPhotos(); 
+    loadVideos();
   }, []);
 
   if (cameraPermission === null) {
@@ -63,10 +62,9 @@ export const MeusDados = () => {
     );
   }
 
-  const savePhotosToStorage = async (newPhotos) => {
+  const saveVideosToStorage = async (newVideos) => {
     try {
-      await AsyncStorage.setItem("photos", JSON.stringify(newPhotos));
-      console.log("salvou");
+      await AsyncStorage.setItem("videos", JSON.stringify(newVideos));
     } catch (error) {
       console.error("Erro ao salvar no AsyncStorage:", error);
     }
@@ -76,61 +74,70 @@ export const MeusDados = () => {
     setFacing((current) => (current === "back" ? "front" : "back"));
   };
 
-  const takePicture = async () => {
-    if (cameraRef && data.descricao && data.titulo) {
-      try {
-        const photo = await cameraRef.takePictureAsync();
-        const fileName = `${FileSystem.documentDirectory}${Date.now()}.jpg`;
-        console.log(fileName);
-        await FileSystem.moveAsync({
-          from: photo.uri,
-          to: fileName,
-        });
+  const toggleRecording = async () => {
+    if (!isRecording) {
+      if (cameraRef && data.descricao && data.titulo) {
+        setIsRecording(true);
+        try {
+          cameraRef.recordAsync().then(async (video) => {
+            const fileName = `${FileSystem.documentDirectory}${Date.now()}.mp4`;
+            await FileSystem.moveAsync({
+              from: video.uri,
+              to: fileName,
+            });
 
-        const newPhoto = {
-          file: fileName,
-          titulo: data.titulo,
-          descricao: data.descricao,
-        };
+            const newVideo = {
+              file: fileName,
+              titulo: data.titulo,
+              descricao: data.descricao,
+            };
 
-        const newPhotos = [...photos, newPhoto];
-        setPhotos(newPhotos);
-        savePhotosToStorage(newPhotos);
+            const newVideos = [...videos, newVideo];
+            setVideos(newVideos);
+            saveVideosToStorage(newVideos);
 
-        setData({ titulo: "", descricao: "" });
-      } catch (error) {
-        console.error("Erro ao tirar a foto:", error);
+            setData({ titulo: "", descricao: "" });
+            setIsRecording(false);
+          });
+        } catch (error) {
+          console.error("Erro ao gravar o vídeo:", error);
+          setIsRecording(false);
+        }
+      }
+    } else {
+      if (cameraRef) {
+        await cameraRef.stopRecording();
       }
     }
   };
 
-  const deletePhoto = async (fileToDelete) => {
+  const deleteVideo = async (fileToDelete) => {
     try {
-      const updatedPhotos = photos.filter((photo) => photo.file !== fileToDelete);
-      setPhotos(updatedPhotos);
-      savePhotosToStorage(updatedPhotos); 
+      const updatedVideos = videos.filter(
+        (video) => video.file !== fileToDelete
+      );
+      setVideos(updatedVideos);
+      saveVideosToStorage(updatedVideos);
 
-     
       await FileSystem.deleteAsync(fileToDelete, { idempotent: true });
-      console.log("Foto excluída:", fileToDelete);
     } catch (error) {
-      console.error("Erro ao excluir a foto:", error);
+      console.error("Erro ao excluir o vídeo:", error);
     }
   };
 
-  const openPhotoModal = (photo) => {
-    setSelectedPhoto(photo);
+  const openVideoModal = (video) => {
+    setSelectedVideo(video);
     setIsModalVisible(true);
   };
 
-  const closePhotoModal = () => {
+  const closeVideoModal = () => {
     setIsModalVisible(false);
-    setSelectedPhoto(null);
+    setSelectedVideo(null);
   };
 
   return (
     <Template>
-      <HeaderMenu variant={"secondary"} title="Meus Documentos" />
+      <HeaderMenu variant={"secondary"} title="Meus Videos" />
       <Camera
         style={{ flex: 2, width: "100%" }}
         type={
@@ -144,8 +151,10 @@ export const MeusDados = () => {
           <S.Button onPress={toggleCameraFacing}>
             <Text style={styles.text}>Alternar Câmera</Text>
           </S.Button>
-          <S.Button onPress={takePicture}>
-            <Text style={styles.text}>Salvar Documento</Text>
+          <S.Button onPress={toggleRecording}>
+            <Text style={styles.text}>
+              {isRecording ? "Parar Gravação" : "Iniciar Gravação"}
+            </Text>
           </S.Button>
           <InputComponent
             label={"Título"}
@@ -167,23 +176,24 @@ export const MeusDados = () => {
       </Camera>
 
       <FlatList
-        data={photos}
+        data={videos}
         keyExtractor={(item, index) => index.toString()}
         style={{ width: "100%", height: "10%" }}
         renderItem={({ item }) => (
           <FilterResult
             isModalVisible={isModalVisible}
-            closePhotoModal={closePhotoModal}
-            selectedPhoto={selectedPhoto}
+            closePhotoModal={closeVideoModal}
+            selectedVideo={selectedVideo}
             file={item.file}
+            video
             onPressEdit={() => {}}
             titulo={item.titulo}
             descricao={item.descricao}
             diaSemana={"Terça"}
             hora={"10:00"}
-            variant={"secondary"}
-            onPress={() => openPhotoModal(item.file)}
-            onPressDelete={() => deletePhoto(item.file)} 
+            variant={"primary"}
+            onPress={() => openVideoModal(item.file)}
+            onPressDelete={() => deleteVideo(item.file)}
           />
         )}
       />
@@ -196,28 +206,5 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
-  },
-  thumbnail: {
-    width: 100,
-    height: 100,
-    margin: 5,
-  },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  fullSizeImage: {
-    width: "80%",
-    height: "80%",
-  },
-  closeButton: {
-    position: "absolute",
-    top: 20,
-    right: 20,
-    padding: 10,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 5,
   },
 });

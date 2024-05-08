@@ -12,6 +12,7 @@ import {
   Modal,
   TouchableOpacity,
 } from "react-native";
+import  {Video}  from "expo-av";
 
 export const FilterResult = ({
   hora,
@@ -19,6 +20,7 @@ export const FilterResult = ({
   file,
   variant,
   onPress,
+  video,
   titulo,
   paciente,
   diaSemana,
@@ -27,15 +29,68 @@ export const FilterResult = ({
   onPressDelete,
   proficional,
   selectedPhoto,
+  selectedVideo,
   isModalVisible,
   closePhotoModal,
 }) => {
   const navigation = useNavigation();
 
-  const handelNavigate = (route) => {
-    navigation.navigate(route);
-  };
+
   return variant == "primary" ? (
+    <S.Container>
+      <S.Top>
+        <TextComponent
+          color={"#14532d"}
+          variant={"Title10"}
+          textAlign={"center"}
+        >
+          Título: {titulo}
+        </TextComponent>
+      </S.Top>
+      <TextComponent color={"#14532d"} variant={"Title10"} textAlign={"center"}>
+        Descrição: {descricao}
+      </TextComponent>
+
+      <ButtonComponent
+        width="100%"
+        marginT="15px 0 0"
+        label={"Excluir"}
+        background={"#9d1b26"}
+        onPress={onPressDelete}
+      />
+      <ButtonComponent
+        width="100%"
+        marginT="10px 0 0"
+        label={"Visualizar"}
+        backgroundColor={"6"}
+        onPress={onPress}
+      />
+
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        onRequestClose={closePhotoModal}
+      >
+        <View style={styles.modalBackground}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={closePhotoModal}
+          >
+            <Text style={styles.text}>Fechar</Text>
+          </TouchableOpacity>
+          {selectedVideo && (
+            <Video
+              source={{ uri: selectedVideo }}
+              style={styles.fullSizeVideo}
+              useNativeControls={true}
+              resizeMode="contain"
+              isLooping={true}
+            />
+          )}
+        </View>
+      </Modal>
+    </S.Container>
+  ) : variant == "secondary" ? (
     <S.Container>
       <S.Top>
         <TextComponent
@@ -77,7 +132,7 @@ export const FilterResult = ({
           >
             <Text style={styles.text}>Fechar</Text>
           </TouchableOpacity>
-          {selectedPhoto && (
+          {selectedPhoto && !video && (
             <Image
               source={{ uri: selectedPhoto }}
               style={styles.fullSizeImage}
@@ -86,7 +141,7 @@ export const FilterResult = ({
         </View>
       </Modal>
     </S.Container>
-  ) : (
+  ): (
     <S.Container>
       <S.Top>
         <TextComponent
@@ -133,26 +188,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  thumbnail: {
-    width: 100,
-    height: 100,
-    margin: 5,
-  },
   modalBackground: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.8)",
     alignItems: "center",
     justifyContent: "center",
   },
-  fullSizeImage: {
+  fullSizeVideo: {
     width: "80%",
     height: "80%",
-  },
-  Image: {
-    width: "20%",
-    height: "100%",
-    position: "absolute",
-    right: 0,
   },
   closeButton: {
     position: "absolute",
