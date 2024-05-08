@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import * as S from "./styles";
 import { Camera } from "expo-camera";
 import * as FileSystem from "expo-file-system";
+import AsyncStorage from "@react-native-async-storage/async-storage"; // Importar AsyncStorage
 
 import {
   Template,
@@ -15,7 +16,7 @@ export const MeusDados = () => {
   const [facing, setFacing] = useState("back");
   const [cameraPermission, setCameraPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
-  const [photos, setPhotos] = useState([]); // Lista vazia
+  const [photos, setPhotos] = useState([]);
   const [data, setData] = useState({ titulo: "", descricao: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -26,6 +27,16 @@ export const MeusDados = () => {
       setCameraPermission(status === "granted");
     };
     requestPermission();
+
+    const loadPhotos = async () => {
+      const storedPhotos = await AsyncStorage.getItem("photos");
+      if (storedPhotos) {
+        console.log(JSON.parse(storedPhotos));
+        setPhotos(JSON.parse(storedPhotos));
+      }
+    };
+
+    loadPhotos(); 
   }, []);
 
   if (cameraPermission === null) {
@@ -52,6 +63,15 @@ export const MeusDados = () => {
     );
   }
 
+  const savePhotosToStorage = async (newPhotos) => {
+    try {
+      await AsyncStorage.setItem("photos", JSON.stringify(newPhotos));
+      console.log("salvou");
+    } catch (error) {
+      console.error("Erro ao salvar no AsyncStorage:", error);
+    }
+  };
+
   const toggleCameraFacing = () => {
     setFacing((current) => (current === "back" ? "front" : "back"));
   };
@@ -61,23 +81,40 @@ export const MeusDados = () => {
       try {
         const photo = await cameraRef.takePictureAsync();
         const fileName = `${FileSystem.documentDirectory}${Date.now()}.jpg`;
+        console.log(fileName);
         await FileSystem.moveAsync({
           from: photo.uri,
           to: fileName,
         });
 
-        setPhotos((currentPhotos) => [
-          ...currentPhotos,
-          {
-            file: fileName,
-            titulo: data.titulo,
-            descricao: data.descricao,
-          },
-        ]);
+        const newPhoto = {
+          file: fileName,
+          titulo: data.titulo,
+          descricao: data.descricao,
+        };
 
-        setData({ titulo: "", descricao: "" })
+        const newPhotos = [...photos, newPhoto];
+        setPhotos(newPhotos);
+        savePhotosToStorage(newPhotos);
+
+        setData({ titulo: "", descricao: "" });
       } catch (error) {
+        console.error("Erro ao tirar a foto:", error);
       }
+    }
+  };
+
+  const deletePhoto = async (fileToDelete) => {
+    try {
+      const updatedPhotos = photos.filter((photo) => photo.file !== fileToDelete);
+      setPhotos(updatedPhotos);
+      savePhotosToStorage(updatedPhotos); 
+
+     
+      await FileSystem.deleteAsync(fileToDelete, { idempotent: true });
+      console.log("Foto excluída:", fileToDelete);
+    } catch (error) {
+      console.error("Erro ao excluir a foto:", error);
     }
   };
 
@@ -112,7 +149,7 @@ export const MeusDados = () => {
           </S.Button>
           <InputComponent
             label={"Título"}
-            type={"null"}
+            type={"text"}
             onChangeText={(titulo) =>
               setData((currentData) => ({ ...currentData, titulo }))
             }
@@ -120,7 +157,7 @@ export const MeusDados = () => {
           />
           <InputComponent
             label={"Descrição"}
-            type={"null"}
+            type={"text"}
             onChangeText={(descricao) =>
               setData((currentData) => ({ ...currentData, descricao }))
             }
@@ -146,6 +183,7 @@ export const MeusDados = () => {
             hora={"10:00"}
             variant={"primary"}
             onPress={() => openPhotoModal(item.file)}
+            onPressDelete={() => deletePhoto(item.file)} 
           />
         )}
       />

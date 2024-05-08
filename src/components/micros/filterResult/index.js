@@ -23,10 +23,10 @@ export const FilterResult = ({
   paciente,
   diaSemana,
   prontuario,
-  onPressEdit,
+  descricao,
+  onPressDelete,
   proficional,
   selectedPhoto,
-  descricao,
   isModalVisible,
   closePhotoModal,
 }) => {
@@ -51,16 +51,16 @@ export const FilterResult = ({
         Descrição: {descricao}
       </TextComponent>
 
-      {/* <ButtonComponent
-        width="100%"
-        marginT="20px 0 0"
-        label={"Editar"}
-        backgroundColor={"3"}
-        onPress={onPressEdit}
-      /> */}
       <ButtonComponent
         width="100%"
-        marginT="20px 0 0"
+        marginT="15px 0 0"
+        label={"Excluir"}
+        background={"#9d1b26"}
+        onPress={onPressDelete}
+      />
+      <ButtonComponent
+        width="100%"
+        marginT="10px 0 0"
         label={"Visualizar"}
         backgroundColor={"6"}
         onPress={onPress}

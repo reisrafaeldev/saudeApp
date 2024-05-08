@@ -31,12 +31,11 @@ export const Top = styled.View`
 `;
 export const Container = styled.TouchableOpacity`
   padding: 10px;
-
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
   padding-top: 8px;
-  gap: 7px;
+  gap: 4px;
   background-color: #D1D5DA;
   flex-direction: column;
   margin:  20px;
