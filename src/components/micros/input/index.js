@@ -19,11 +19,15 @@ export const InputComponent = ({
         underlineColorAndroid="transparent"
         onChangeText={onChangeText}
         value={value}
-        secureTextEntry={type === "text" || show == true ? false : true}
+        secureTextEntry={
+          type === "text" || type === "null" || show == true ? false : true
+        }
         placeholder={placeholder}
       ></S.Input>
       {type === "text" ? (
         <S.Icon source={require("../../../assets/email.png")} />
+      ) : type === "null" ? (
+        <></>
       ) : (
         <S.Button onPress={() => (show ? setShow(false) : setShow(true))}>
           <S.Icon source={require("../../../assets/password.png")} />

@@ -27,6 +27,7 @@ export const Top = styled.View`
   padding-bottom: 5px;
   border-bottom-width: 1px;
   border-color: #000;
+  height: 50px;
 `;
 export const Container = styled.TouchableOpacity`
   padding: 10px;

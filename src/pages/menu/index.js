@@ -22,6 +22,7 @@ export const Menu = () => {
     { image: "fone", title: "Suporte", redirect: "Data" },
     { image: "map", title: "Rede Credenciada", redirect: "Maps" },
     { image: "usuario", title: "Dados", redirect: "Data" },
+    { image: "card", title: "Meus Documentos", redirect: "MeusDados" },
     {
       image: "calendario",
       title: "Meus Agendamentos",

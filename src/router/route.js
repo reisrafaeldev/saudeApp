@@ -3,9 +3,21 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AuthProvider from "../context/auth";
-import { ForgotPassword, Login, Initial, Menu , Data, Specialty, MakeAppointment, MyAppointment, ServicesType, Maps } from "../pages";
+import {
+  ForgotPassword,
+  Login,
+  Initial,
+  Menu,
+  Data,
+  Specialty,
+  MakeAppointment,
+  MyAppointment,
+  ServicesType,
+  Maps,
+} from "../pages";
 import { Ionicons } from "@expo/vector-icons";
 import { MapScreen } from "../pages/mapScreen";
+import { MeusDados } from "../pages/MeusDados";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,28 +26,35 @@ const Route = () => {
     <NavigationContainer>
       <AuthProvider>
         <Stack.Navigator>
-        <Stack.Screen
+          <Stack.Screen
             name="Initial"
             options={{
               headerShown: false,
             }}
             component={Initial}
           />
-        <Stack.Screen
+          <Stack.Screen
+            name="MeusDados"
+            options={{
+              headerShown: false,
+            }}
+            component={MeusDados}
+          />
+          <Stack.Screen
             name="Maps"
             options={{
               headerShown: false,
             }}
             component={Maps}
           />
-        <Stack.Screen
+          <Stack.Screen
             name="MapScreen"
             options={{
               headerShown: false,
             }}
             component={MapScreen}
           />
-        <Stack.Screen
+          <Stack.Screen
             name="ServicesType"
             options={{
               headerShown: false,
@@ -78,7 +97,6 @@ const Route = () => {
             }}
             component={Data}
           />
-          
 
           <Stack.Screen
             name="Login"

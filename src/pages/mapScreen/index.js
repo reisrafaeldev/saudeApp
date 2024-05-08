@@ -15,6 +15,7 @@ export const MapScreen = () => {
   const [location, setLocation] = useState(null);
   const [mapRegion, setMapRegion] = useState(null);
 
+      
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -33,6 +34,8 @@ export const MapScreen = () => {
     })();
   }, []);
 
+
+      
   return (
     <Template>
       <HeaderMenu variant={"secondary"} title="Mapa" />
