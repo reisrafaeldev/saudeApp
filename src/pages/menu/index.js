@@ -23,8 +23,7 @@ export const Menu = () => {
     { image: "map", title: "Rede Credenciada", redirect: "Maps" },
     { image: "usuario", title: "Dados", redirect: "Data" },
     { image: "card", title: "Meus Documentos", redirect: "MeusDados" },
-    { image: "card", title: "Meus Videos", redirect: "MeusVideos" },
-    {
+       {
       image: "calendario",
       title: "Meus Agendamentos",
       redirect: "MyAppointment",
