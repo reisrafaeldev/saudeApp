@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import * as S from "./styles";
-import { Camera } from "expo-camera";
+import { Camera, CameraView } from "expo-camera";
 import * as FileSystem from "expo-file-system";
-import AsyncStorage from "@react-native-async-storage/async-storage"; // Importar AsyncStorage
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
   Template,
@@ -13,14 +13,13 @@ import {
 import { View, Text, StyleSheet, FlatList, Button } from "react-native";
 
 export const MeusDados = () => {
-  const [facing, setFacing] = useState("back");
   const [cameraPermission, setCameraPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [data, setData] = useState({ titulo: "", descricao: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-
+console.log("fotos",photos)
   useEffect(() => {
     const requestPermission = async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -36,7 +35,7 @@ export const MeusDados = () => {
       }
     };
 
-    loadPhotos(); 
+    loadPhotos();
   }, []);
 
   if (cameraPermission === null) {
@@ -66,14 +65,7 @@ export const MeusDados = () => {
   const savePhotosToStorage = async (newPhotos) => {
     try {
       await AsyncStorage.setItem("photos", JSON.stringify(newPhotos));
-      console.log("salvou");
-    } catch (error) {
-      console.error("Erro ao salvar no AsyncStorage:", error);
-    }
-  };
-
-  const toggleCameraFacing = () => {
-    setFacing((current) => (current === "back" ? "front" : "back"));
+    } catch (error) {}
   };
 
   const takePicture = async () => {
@@ -98,24 +90,19 @@ export const MeusDados = () => {
         savePhotosToStorage(newPhotos);
 
         setData({ titulo: "", descricao: "" });
-      } catch (error) {
-        console.error("Erro ao tirar a foto:", error);
-      }
+      } catch (error) {}
     }
   };
 
   const deletePhoto = async (fileToDelete) => {
     try {
-      const updatedPhotos = photos.filter((photo) => photo.file !== fileToDelete);
+      const updatedPhotos = photos.filter(
+        (photo) => photo.file !== fileToDelete
+      );
       setPhotos(updatedPhotos);
-      savePhotosToStorage(updatedPhotos); 
-
-     
+      savePhotosToStorage(updatedPhotos);
       await FileSystem.deleteAsync(fileToDelete, { idempotent: true });
-      console.log("Foto excluída:", fileToDelete);
-    } catch (error) {
-      console.error("Erro ao excluir a foto:", error);
-    }
+    } catch (error) {}
   };
 
   const openPhotoModal = (photo) => {
@@ -131,19 +118,12 @@ export const MeusDados = () => {
   return (
     <Template>
       <HeaderMenu variant={"secondary"} title="Meus Documentos" />
-      <Camera
+      <CameraView
         style={{ flex: 2, width: "100%" }}
-        type={
-          facing === "back"
-            ? Camera.Constants.Type.back
-            : Camera.Constants.Type.front
-        }
+        type={"front"}
         ref={(ref) => setCameraRef(ref)}
       >
         <S.Content>
-          <S.Button onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Alternar Câmera</Text>
-          </S.Button>
           <S.Button onPress={takePicture}>
             <Text style={styles.text}>Salvar Documento</Text>
           </S.Button>
@@ -164,7 +144,7 @@ export const MeusDados = () => {
             value={data.descricao}
           />
         </S.Content>
-      </Camera>
+      </CameraView>
 
       <FlatList
         data={photos}
@@ -183,7 +163,7 @@ export const MeusDados = () => {
             hora={"10:00"}
             variant={"secondary"}
             onPress={() => openPhotoModal(item.file)}
-            onPressDelete={() => deletePhoto(item.file)} 
+            onPressDelete={() => deletePhoto(item.file)}
           />
         )}
       />

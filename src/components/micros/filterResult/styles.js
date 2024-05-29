@@ -21,13 +21,14 @@ export const Image = styled.Image`
 export const Top = styled.View`
   display: flex;
   color: #fff;
-  flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
   width: 100%;
   padding-bottom: 5px;
   border-bottom-width: 1px;
   border-color: #000;
   height: 50px;
+  flex-direction: row;
 `;
 export const Container = styled.TouchableOpacity`
   padding: 10px;

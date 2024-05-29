@@ -35,7 +35,6 @@ export const FilterResult = ({
 }) => {
   const navigation = useNavigation();
 
-
   return variant == "primary" ? (
     <S.Container>
       <S.Top>
@@ -100,7 +99,7 @@ export const FilterResult = ({
         >
           Título: {titulo}
         </TextComponent>
-        {file && <Image source={{ uri: file }} style={styles.Image} />}
+        {file && <Image source={{ uri: file }} style={styles.image} />}
       </S.Top>
       <TextComponent color={"#14532d"} variant={"Title10"} textAlign={"center"}>
         Descrição: {descricao}
@@ -132,12 +131,10 @@ export const FilterResult = ({
           >
             <Text style={styles.text}>Fechar</Text>
           </TouchableOpacity>
-          {selectedPhoto && !video && (
-            <Image
+          <Image
               source={{ uri: selectedPhoto }}
               style={styles.fullSizeImage}
             />
-          )}
         </View>
       </Modal>
     </S.Container>
@@ -193,10 +190,16 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.8)",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
+    height: "100%",
   },
-  fullSizeVideo: {
+  fullSizeImage: {
     width: "80%",
     height: "80%",
+  },
+  image: {
+    width: "30%",
+    height: "100%",
   },
   closeButton: {
     position: "absolute",
