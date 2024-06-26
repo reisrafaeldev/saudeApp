@@ -13,22 +13,13 @@ import {
   ButtonComponent,
   FilterResult,
 } from "../../components/micros";
+import { appointments } from "../../utils/agendamentos";
+
 export const MyAppointment = () => {
   const navigation = useNavigation();
-  const [selected, setSelected] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
   const countries = ["2023", "2022", "2021", "2020", "2019"];
-  const data = [
-    { title: "Nome:" },
-    { title: "CPF:" },
-    { title: "PRECCP:" },
-    { title: "Validade:" },
-    { title: "Prontuário:" },
-    { title: "Data Nascimento:" },
-    { title: "Grupo:" },
-    { title: "RM:" },
-    { title: "CPF Titular:" },
-    { title: "Última Atualização:" },
-  ];
   const mesesDoAno = [
     "Janeiro",
     "Fevereiro",
@@ -43,8 +34,10 @@ export const MyAppointment = () => {
     "Novembro",
     "Dezembro",
   ];
-  const handleSubmit = () => {
-    navigation.navigate("Login");
+
+  const handleFilter = () => {
+    console.log("Filtro aplicado com Ano:", selectedYear, "e Mês:", selectedMonth);
+    navigation.navigate("Login"); // Navegar após aplicar o filtro pode não ser o desejado, ajuste conforme necessário
   };
 
   return (
@@ -55,7 +48,7 @@ export const MyAppointment = () => {
           width="30%"
           data={countries}
           onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
+            setSelectedYear(selectedItem);
           }}
           label={"Ano"}
           buttonLabel={"Ano"}
@@ -64,52 +57,30 @@ export const MyAppointment = () => {
           width="30%"
           data={mesesDoAno}
           onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
+            setSelectedMonth(selectedItem);
           }}
           label={"Mês"}
           buttonLabel={"Mês"}
         />
-
         <ButtonComponent
           width="30%"
           label={"Filtrar"}
-          backgroundColor={"3"}
-          onPress={handleSubmit}
+          backgroundColor={"#3"}
+          onPress={handleFilter}
         />
       </S.Center>
       <S.Overflow>
-        <FilterResult
-          paciente={"Rafael"}
-          proficional={"Zezin"}
-          prontuario={"1234"}
-          data={"24/08"}
-          diaSemana={"Terça"}
-          hora={"10:00"}
-        />
-        <FilterResult
-          paciente={"Rafael"}
-          proficional={"Zezin"}
-          prontuario={"1234"}
-          data={"24/08"}
-          diaSemana={"Terça"}
-          hora={"10:00"}
-        />
-        <FilterResult
-          paciente={"Rafael"}
-          proficional={"Zezin"}
-          prontuario={"1234"}
-          data={"24/08"}
-          diaSemana={"Terça"}
-          hora={"10:00"}
-        />
-        <FilterResult
-          paciente={"Rafael"}
-          proficional={"Zezin"}
-          prontuario={"1234"}
-          data={"24/08"}
-          diaSemana={"Terça"}
-          hora={"10:00"}
-        />
+        {appointments.map((appointment, index) => (
+          <FilterResult
+            key={index}
+            paciente={appointment.paciente}
+            profissional={appointment.profissional}
+            prontuario={appointment.prontuario}
+            data={appointment.data}
+            diaSemana={appointment.diaSemana}
+            hora={appointment.hora}
+          />
+        ))}
       </S.Overflow>
     </Template>
   );

@@ -19,6 +19,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MapScreen } from "../pages/mapScreen";
 import { MeusDados } from "../pages/MeusDados";
 import { MeusVideos } from "../pages/MeusVideos";
+import { MeuHistorico } from "../pages/MeuHistorico";
 
 const Stack = createNativeStackNavigator();
 
@@ -68,6 +69,13 @@ const Route = () => {
               headerShown: false,
             }}
             component={ServicesType}
+          />
+          <Stack.Screen
+            name="MeuHistorico"
+            options={{
+              headerShown: false,
+            }}
+            component={MeuHistorico}
           />
 
           <Stack.Screen

@@ -33,6 +33,11 @@ export const Menu = () => {
       title: "Tipos de Serviço",
       redirect: "ServicesType",
     },
+    {
+      image: "card",
+      title: "Meu Historico",
+      redirect: "MeuHistorico",
+    },
   ];
 
   const handleSubmit = () => {
